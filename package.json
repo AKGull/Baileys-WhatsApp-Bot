@@ -1,0 +1,21 @@
+{
+  "name": "whatsapp_bot",
+  "version": "1.0.0",
+  "description": "Whatsapp Bot",
+  "license": "MIT",
+  "author": "Kifayatullah",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "axios": "latest",
+    "@whiskeysockets/baileys": "latest",
+    "@tobyg74/tiktok-api-dl": "",
+    "chalk": "",
+    "fs": "",
+    "pino": "",
+    "xnxx-dl": ""
+  }
+}

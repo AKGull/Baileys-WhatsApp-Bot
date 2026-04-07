@@ -13,8 +13,6 @@ export async function Audio(quotedMessage, jid, msg, bot) {
   
   const buffer = await downloadMediaMessage(fakeMsg, 'buffer');
   
-  const Mtype = quotedMessage?.audioMessage?.mimetype ?? 'audio/mp3';
-  
   const ext = "opus";
   
   const filename = `${audioDir}/audio-${Date.now()}.${ext}`;
@@ -25,7 +23,8 @@ export async function Audio(quotedMessage, jid, msg, bot) {
   
   await bot.sendMessage(jid, {
     audio: buffer,
-    caption: "View Once Media Downloaded! \n\n{@Kifayatullah}",
+    mimetype: "audio/ogg; codecs=opus",
+    ptt: true,
     contextInfo: { isForwarded: true, forwardingScore: 999 }
   }, {
     quoted: msg

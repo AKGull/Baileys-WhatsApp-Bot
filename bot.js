@@ -166,6 +166,8 @@ async function start() {
   
   bot.ev.on("messages.update", async (updates) => {
     for (const update of updates) {
+
+      if (!update.key?.remoteJid) continue;
       
       const jid = update.key.remoteJid;
       

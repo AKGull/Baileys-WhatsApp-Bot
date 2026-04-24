@@ -100,7 +100,9 @@ async function start() {
     
     const msg = messages[0];
     
-    const jid = msg.key.remoteJid;
+    const jid = msg.key.remoteJid?.endsWith('@lid') ?
+      (msg.key.remoteJidAlt ?? msg.key.remoteJid) :
+      msg.key.remoteJid;
     
     if (!jid) return;
     
@@ -177,7 +179,9 @@ async function start() {
       
       if (!update.key?.remoteJid) continue;
       
-      const jid = update.key.remoteJid;
+      const jid = update.key.remoteJid?.endsWith('@lid') ?
+        (update.key.remoteJidAlt ?? update.key.remoteJid) :
+        update.key.remoteJid;
       
       if (jid.endsWith('@newsletter')) continue;
       

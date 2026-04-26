@@ -216,7 +216,7 @@ async function start() {
         
       } else if (editedText) {
         if (!isPrivate) {
-          await recordEdit(bot, jid, msgId, editedText);
+          await recordEdit(bot, msg, jid, msgId, editedText);
         }
       }
       

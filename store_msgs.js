@@ -35,7 +35,7 @@ export async function store(bot, jid, pn, participant_jid, key, rawType, msg) {
   
   const caption = msg?.message?.[rawType]?.caption || null;
   
-  const text = message || caption || null;
+  const text = message || caption || "";
   
   const now = new Date();
   const sent_time = await formatTimePKT(now);
@@ -111,8 +111,9 @@ recordEdit(bot, jid, msgId, newText) {
   entry.edits = JSON.stringify(edits);
   
   await bot.sendMessage(jid, {
-    text: `*Message Edited! ⚠*\n\n*From:* ${entry.pn}\n*Text:* ${entry.text}\n ${await EditHistory(entry)}`
-  });
+    text: `*Message Edited! ⚠*\n\n*From:* ${entry.pn}\n*Text:* ${entry.text}\n ${await EditHistory(entry)}`,
+    contextInfo: { isForwarded: true, forwardingScore: 999 }
+  }, { quoted: msg });
 }
 
 async function EditHistory(entry) {
@@ -169,6 +170,7 @@ export async function DetectDeleted(bot, jid, msgId) {
     await bot.sendMessage(jid, {
       [mediaType]: fileBuffer,
       mimetype: entry.mime,
+      caption: `*Caption:*\n${entry.text}`,
       contextInfo: { isForwarded: true, forwardingScore: 999 }
     }, { quoted });
     

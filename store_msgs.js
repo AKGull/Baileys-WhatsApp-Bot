@@ -96,7 +96,7 @@ async function saveMedia(bot, msg, filename) {
 
 
 export async function
-recordEdit(bot, jid, msgId, newText) {
+recordEdit(bot, msg, jid, msgId, newText) {
   const entry = stmt.get.get(msgId);
   if (!entry) return false;
   
@@ -170,7 +170,7 @@ export async function DetectDeleted(bot, jid, msgId) {
     await bot.sendMessage(jid, {
       [mediaType]: fileBuffer,
       mimetype: entry.mime,
-      caption: `*Caption:*\n${entry.text}`,
+      caption: `*Caption:* ${entry.text}`,
       contextInfo: { isForwarded: true, forwardingScore: 999 }
     }, { quoted });
     

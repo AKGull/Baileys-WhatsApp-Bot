@@ -96,7 +96,7 @@ async function saveMedia(bot, msg, filename) {
 
 
 export async function
-recordEdit(bot, msg, jid, msgId, newText) {
+recordEdit(bot, jid, msgId, newText) {
   const entry = stmt.get.get(msgId);
   if (!entry) return false;
   
@@ -110,10 +110,20 @@ recordEdit(bot, msg, jid, msgId, newText) {
   stmt.updateEdits.run(JSON.stringify(edits), msgId);
   entry.edits = JSON.stringify(edits);
   
+  const quoted = {
+    key: {
+      remoteJid: entry.jid,
+      fromMe: false,
+      id: msgId,
+      participant: entry.participant_jid ?? undefined
+    },
+    message: JSON.parse(entry.proto)
+  };
+  
   await bot.sendMessage(jid, {
     text: `*Message Edited! ⚠*\n\n*From:* ${entry.pn}\n*Text:* ${entry.text}\n ${await EditHistory(entry)}`,
     contextInfo: { isForwarded: true, forwardingScore: 999 }
-  }, { quoted: msg });
+  }, { quoted });
 }
 
 async function EditHistory(entry) {

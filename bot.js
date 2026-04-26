@@ -24,6 +24,7 @@ import { Image } from './vvImage.js';
 import { Video } from './vvVideo.js';
 
 import { Audio } from './vvAudio.js';
+import { getpp } from './getpp.js';
 
 import { dlxnxx } from './xnxx.js';
 
@@ -115,10 +116,16 @@ async function start() {
     const isGroup = isJidGroup(jid);
     
     const pn = isGroup ?
-      msg.key.participant?.split('@')[0]?.split(':')[0] :
+      (msg.key.participant?.endsWith('@lid') ?
+        msg.key.participantAlt?.split('@')[0] :
+        msg.key.participant?.split('@')[0]?.split(':')[0]) :
       jid.split('@')[0]?.split(':')[0];
     
-    const participant_jid = isGroup ? msg.key.participant : jid;
+    const participant_jid = isGroup ?
+      (msg.key.participant?.endsWith('@lid') ?
+        msg.key.participantAlt ?? msg.key.participant :
+        msg.key.participant) :
+      jid;
     
     const metadata = isGroup ? await bot.groupMetadata(jid) : null;
     
@@ -138,29 +145,33 @@ async function start() {
     
     const isVoice = quotedMessage?.audioMessage?.viewOnce === true;
     
-    const quotedSender = contextInfo?.participant || contextInfo?.remoteJid;
-    
-    const isFromMe = quotedSender?.split("@")[0].split(":")[0] === bot.user.id.split("@")[0].split(":")[0];
+    const isFromMe = msg.key.fromMe
     
     const isXnxx = text.toLowerCase().startsWith("xnxx");
     
     const isTikTok = text.includes(".tiktok.com/");
+    
+    const ppt = text.split(" ")[0].toLowerCase();
     
     if (!msg.key.fromMe && !isPrivate) {
       await store(bot, jid, pn, participant_jid, key, rawType, msg);
     }
     
     
-    if (isImg && !isFromMe) {
+    if (isImg && isFromMe) {
       await Image(quotedMessage, jid, msg, bot);
     }
     
-    if (isVideo && !isFromMe) {
+    if (isVideo && isFromMe) {
       await Video(quotedMessage, jid, msg, bot);
     }
     
-    if (isVoice && !isFromMe) {
+    if (isVoice && isFromMe) {
       await Audio(quotedMessage, jid, msg, bot);
+    }
+    
+    if (ppt === "getpp") {
+      await getpp(bot, jid, msg, text);
     }
     
     if (isTikTok) {

@@ -157,7 +157,6 @@ async function start() {
       await store(bot, jid, pn, participant_jid, key, rawType, msg);
     }
     
-    
     if (isImg && isFromMe) {
       await Image(quotedMessage, jid, msg, bot);
     }

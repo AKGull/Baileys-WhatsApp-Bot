@@ -201,7 +201,7 @@ export async function startCleanup() {
     stmt.deleteOld.run(cutoff);
     for (const row of old) {
       if (row.filename) {
-        await fs.unlink(entry.filename).catch(() => {});
+        await fs.unlink(row.filename).catch(() => {});
       }
     }
   }
